@@ -5037,6 +5037,16 @@
 		)
 		(uuid "476fe2c1-a030-4611-8c9b-1e516342e591")
 	)
+	(label "MVIN"
+		(at 111.76 100.33 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4ee5518b-8665-4aa8-9983-fcb94abdf9d7")
+	)
 	(label "GPIO4{slash}GPCLK0"
 		(at 31.75 35.56 0)
 		(effects
@@ -6344,7 +6354,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
 			(at 158.75 158.75 0)
 			(effects
 				(font
@@ -7387,7 +7397,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
 			(at 121.92 158.75 0)
 			(effects
 				(font
@@ -7461,7 +7471,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
 			(at 86.36 158.75 0)
 			(effects
 				(font
