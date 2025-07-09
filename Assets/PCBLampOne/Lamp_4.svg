@@ -11,7 +11,7 @@
    class="lucide lucide-lamp-desk-icon lucide-lamp-desk"
    version="1.1"
    id="svg4"
-   sodipodi:docname="Lamp_3.svg"
+   sodipodi:docname="Lamp_4.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -42,10 +42,9 @@
      id="layer1"
      inkscape:label="Layer 1">
     <path
-       id="path5"
-       style="stroke-width:0.7;fill:#000000;fill-opacity:1;stroke:none"
-       transform="rotate(-90.035477)"
-       d="m -9.2189455,19.289911 c -0.679792,0.957608 -1.8558265,1.430516 -3.0093215,1.210111 -1.153495,-0.220405 -2.072324,-1.093589 -2.351166,-2.234368 -0.278842,-1.140779 0.133582,-2.339364 1.055341,-3.067025 z"
+       id="path5-5"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.7"
+       d="m 19.938993,9.8257819 c 0.315614,0.2237561 0.788287,1.2361581 0.568597,2.3897901 -0.219691,1.153631 -1.092306,2.073 -2.232912,2.352549 -1.140606,0.279548 -1.728189,0.108054 -2.554247,-0.544232 z"
        sodipodi:nodetypes="csscc" />
   </g>
 </svg>
