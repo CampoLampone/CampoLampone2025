@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   stroke="currentColor"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   class="lucide lucide-lamp-desk-icon lucide-lamp-desk"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="lamp-desk_3.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="43.369216"
+     inkscape:cx="12.335939"
+     inkscape:cy="12.970029"
+     inkscape:window-width="2560"
+     inkscape:window-height="1440"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Layer 1">
+    <path
+       id="path5"
+       style="stroke-width:0.7;fill:#000000;fill-opacity:1;stroke:none"
+       transform="rotate(-90.035477)"
+       d="m -9.2189455,19.289911 c -0.679792,0.957608 -1.8558265,1.430516 -3.0093215,1.210111 -1.153495,-0.220405 -2.072324,-1.093589 -2.351166,-2.234368 -0.278842,-1.140779 0.133582,-2.339364 1.055341,-3.067025 z"
+       sodipodi:nodetypes="csscc" />
+  </g>
+</svg>

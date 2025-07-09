@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="Lamp.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="23.927192"
+     inkscape:cx="27.729957"
+     inkscape:cy="9.7169781"
+     inkscape:window-width="2560"
+     inkscape:window-height="1440"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="font-weight:500;font-size:1.5px;line-height:10;font-family:'GohuFont uni11 Nerd Font';-inkscape-font-specification:'GohuFont uni11 Nerd Font Medium';text-align:end;text-anchor:end;stroke-width:0.185208"
+       d="M 1.2800684,1.6449463 V 1.099292 h 0.068115 0.068115 v 0.4775391 0.4768066 h 0.2731933 0.272461 v 0.068115 0.068115 H 1.6206446 1.2800684 Z M 2.6438379,1.9855225 V 1.9174073 H 2.4394922 2.2344141 v 0.068115 0.068115 H 2.4394922 2.6438379 Z M 2.2344141,1.5760987 v -0.068115 h 0.2050781 0.2043457 v 0.068115 0.068848 H 2.4394922 2.2344141 Z m 0,0.3413086 V 1.849292 1.7811768 h 0.2050781 0.2043457 v -0.068115 -0.068115 h 0.068115 0.068115 v 0.272461 0.2724609 H 2.5076075 2.2344141 V 2.121753 2.0536377 h -0.068115 -0.068115 v -0.068115 -0.068115 h 0.068115 z M 2.9162989,1.849292 V 1.5079834 h 0.2731933 0.272461 v 0.068115 0.068848 h -0.068115 -0.068115 v 0.272461 0.2724609 H 3.2576075 3.1887598 V 1.9174073 1.6449463 h -0.068115 -0.068115 v 0.272461 0.2724609 H 2.9844141 2.9162989 Z M 3.4619532,1.6449463 h 0.068115 0.068115 v 0.272461 0.2724609 H 3.5300684 3.4619532 V 1.9174073 Z M 3.7344141,1.9855225 V 1.5079834 h 0.068115 0.068115 v 0.068115 0.068848 h 0.068115 0.068115 v 0.068115 0.068115 H 3.9387598 3.8706446 V 1.9174073 2.0536377 H 4.0757227 4.2800684 V 1.849292 1.6449463 H 4.1438379 4.006875 v -0.068848 -0.068115 h 0.1369629 0.1362305 v 0.068115 0.068848 h 0.068115 0.068115 V 1.849292 2.0536377 h -0.068115 -0.068115 v 0.068848 0.068115 H 4.0757227 3.8706446 v 0.1362305 0.1362305 h -0.068115 -0.068115 z"
+       id="text1"
+       aria-label="Lamp" />
+  </g>
+</svg>

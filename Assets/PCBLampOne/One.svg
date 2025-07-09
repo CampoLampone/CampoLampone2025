@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="One.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="23.927192"
+     inkscape:cx="27.729957"
+     inkscape:cy="9.7169781"
+     inkscape:window-width="2560"
+     inkscape:window-height="1440"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="font-weight:500;font-size:1.5px;line-height:10;font-family:'GohuFont uni11 Nerd Font';-inkscape-font-specification:'GohuFont uni11 Nerd Font Medium';text-align:end;text-anchor:end;stroke-width:0.185208"
+       d="m 1.3940177,1.2005808 v -0.068115 h 0.2050781 0.2043457 v 0.068115 0.068115 H 1.5990958 1.3940177 V 1.6781199 2.0868113 H 1.5990958 1.8034415 V 1.6781199 1.2686961 h 0.068115 0.068115 v 0.4094238 0.4086914 h -0.068115 -0.068115 v 0.068115 0.068115 H 1.5990958 1.3940177 V 2.1549265 2.0868113 H 1.3259025 1.2577872 V 1.6781199 1.2686961 h 0.068115 0.068115 z M 2.0759025,1.8824656 V 1.541157 h 0.2731933 0.272461 v 0.068115 0.068848 H 2.4172111 2.2121329 v 0.2724609 0.272461 H 2.1440177 2.0759025 Z M 2.6215568,1.6781199 h 0.068115 0.068115 v 0.2724609 0.272461 H 2.689672 2.6215568 V 1.9505808 Z M 3.0302482,1.6092722 V 1.541157 H 3.2353263 3.439672 v 0.068115 0.068848 H 3.2353263 3.0302482 v 0.068115 0.068115 H 3.2353263 3.439672 v -0.068115 -0.068115 h 0.068115 0.068115 V 1.8143504 1.9505808 H 3.3034415 3.0302482 v 0.068115 0.068115 H 2.9621329 2.8940177 V 1.8824656 1.6781199 h 0.068115 0.068115 z m 0,0.4775391 h 0.2731933 0.272461 v 0.068115 0.068115 H 3.3034415 3.0302482 v -0.068115 z"
+       id="text1"
+       aria-label="One" />
+  </g>
+</svg>
