@@ -1,2 +1,2 @@
 # CampoLampone2025
-This is repo for PCBs Images, schemes and stuff
+This is repo for Firmware, PCBs, Images, schemes and stuff
