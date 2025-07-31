@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 PID_t motors_pid[MOTOR_COUNT] = { [0 ... MOTOR_COUNT-1] = {
-    .kp = 5,
+    .kp = 1.0,
     .ki = 0.0,
     .kd = 0.0,
 }};
@@ -46,7 +46,7 @@ void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
     motor_pid->dt = delta_ms;
     motor_pid->setpoint = target_speed;
     pid_compute(motor_pid);
-    int pwm_value = motor_pid->output * 100;
+    int pwm_value = motor_pid->output * 256;
     pwm_value = clamp_int(pwm_value, 0, 0xFFFF);
     motor_set_pwm(side, DIRECTION_FORWARD, pwm_value);
 }
