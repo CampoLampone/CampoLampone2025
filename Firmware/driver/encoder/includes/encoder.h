@@ -15,8 +15,8 @@ const static uint8_t encoder_sm[] = {
 };
 
 const static uint8_t encoder_pins[] = {
-    [ENCODER_RIGHT] = BOARD_ENCODER1_PIN_A,
-    [ENCODER_LEFT]  = BOARD_ENCODER2_PIN_A
+    [ENCODER_RIGHT] = BOARD_ENCODER2_PIN_A,
+    [ENCODER_LEFT]  = BOARD_ENCODER1_PIN_A
 };
 
 #define GET_ENCODER_PIO(encoder) (encoder_pio[encoder])

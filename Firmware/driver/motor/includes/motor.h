@@ -9,13 +9,13 @@ enum motor_num{
 };
 
 static const uint8_t motor_pwm_pins[] = {
-    [MOTOR_RIGHT] = BOARD_MOTOR_PIN_3,
-    [MOTOR_LEFT]  = BOARD_MOTOR_PIN_1
+    [MOTOR_RIGHT] = BOARD_MOTOR_PIN_4,
+    [MOTOR_LEFT]  = BOARD_MOTOR_PIN_2
 };
 
 static const uint8_t motor_dir_pins[] = {
-    [MOTOR_RIGHT] = BOARD_MOTOR_PIN_4,
-    [MOTOR_LEFT]  = BOARD_MOTOR_PIN_2
+    [MOTOR_RIGHT] = BOARD_MOTOR_PIN_3,
+    [MOTOR_LEFT]  = BOARD_MOTOR_PIN_1
 };
 
 #define GET_MOTOR_PWM_PIN(motor) (motor_pwm_pins[motor])
