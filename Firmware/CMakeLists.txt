@@ -4,7 +4,7 @@ set(PICO_BOARD_HEADER_DIRS ${CMAKE_CURRENT_LIST_DIR}/boards)
 
 set(PICO_BOARD board_lampone)
 
-include(pico_sdk_import.cmake)
+include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 project(lampone)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
