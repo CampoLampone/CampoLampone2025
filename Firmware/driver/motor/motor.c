@@ -16,6 +16,9 @@ void setup_pwm(uint8_t motor){
 }
 
 void motor_init(void){
+    gpio_init(BOARD_MOTOR_EEP);
+    gpio_set_dir(BOARD_MOTOR_EEP, GPIO_OUT);
+    gpio_put(BOARD_MOTOR_EEP, true);
     for (int motor = 0; motor < MOTOR_COUNT; motor++){
         setup_motor_pin(motor);
         setup_pwm(motor);

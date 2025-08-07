@@ -9,11 +9,6 @@ enum encoder_num{
     ENCODER_COUNT
 };
 
-static PIO encoder_pio[] = {
-    [ENCODER_RIGHT] = pio0,
-    [ENCODER_LEFT]  = pio1
-};
-
 const static uint8_t encoder_sm[] = {
     [ENCODER_RIGHT] = 0,
     [ENCODER_LEFT]  = 1

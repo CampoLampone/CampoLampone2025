@@ -22,6 +22,7 @@
 //---------------------------//
 
 // --- MOTOR PINS ---
+#define BOARD_MOTOR_EEP 10
 #define BOARD_MOTOR_PIN_1 9 // LEFT
 #define BOARD_MOTOR_PIN_2 8
 #define BOARD_MOTOR_PIN_3 7 // RIGHT
