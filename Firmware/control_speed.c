@@ -48,7 +48,7 @@ void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
     pid_compute(motor_pid);
     int pwm_value = motor_pid->output * 256;
     pwm_value = clamp_int(pwm_value, 0, 0xFFFF);
-    motor_set_pwm(side, DIRECTION_FORWARD, pwm_value);
+    // motor_set_pwm(side, DIRECTION_FORWARD, pwm_value);
 }
 
 void control_speed(uint16_t target_speed[MOTOR_COUNT], float delta_ms) {

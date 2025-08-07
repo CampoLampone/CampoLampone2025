@@ -3,6 +3,7 @@
 #include <pico/time.h>
 #include "motor.h"
 #include "encoder.h"
+#include "config.h"
 
 enum command {
     COMMAND_SPEED,
@@ -17,6 +18,7 @@ int main() {
     motor_init();
     stdio_usb_init();
     encoder_init();
+#if TEST_MODE == 0
     absolute_time_t last_time = get_absolute_time();
     int wrum_time = last_time;
     while (true) {
@@ -41,4 +43,17 @@ int main() {
             }
         }
     }
+#elif TEST_MODE == 1
+    while (true){
+        motor_set_pwm(MOTOR_RIGHT, 65000);
+        motor_set_pwm(MOTOR_LEFT, -65000);
+        sleep_ms(2000);
+        motor_set_pwm(MOTOR_RIGHT, -65000);
+        motor_set_pwm(MOTOR_LEFT, 65000);
+        sleep_ms(2000);
+    }
+
+#else
+    #error "End of tests"
+#endif
 }

@@ -4,9 +4,8 @@
 
 
 void setup_motor_pin(uint8_t motor){
-    gpio_set_function(GET_MOTOR_PWM_PIN(motor), GPIO_FUNC_PWM);
-    gpio_init(GET_MOTOR_DIR_PIN(motor));
-    gpio_set_dir(GET_MOTOR_DIR_PIN(motor), GPIO_OUT);
+    gpio_set_function(GET_MOTOR_A_PIN(motor), GPIO_FUNC_PWM);
+    gpio_set_function(GET_MOTOR_B_PIN(motor), GPIO_FUNC_PWM);
 }
 
 void setup_pwm(uint8_t motor){
@@ -26,23 +25,19 @@ void motor_init(void){
 }
 
 void motor_brake(uint8_t motor){
-    gpio_put(GET_MOTOR_DIR_PIN(motor), true);
-    pwm_set_gpio_level(GET_MOTOR_PWM_PIN(motor), 0xFFFF);
-    // TODO: Improve brake functionality
 }
 
 void motor_coast(uint8_t motor){
-    gpio_put(GET_MOTOR_DIR_PIN(motor), false);
-    pwm_set_gpio_level(GET_MOTOR_PWM_PIN(motor), 0x0);
 }
 
-void motor_set_pwm(uint8_t motor, bool direction, uint16_t level){
-    gpio_put(GET_MOTOR_DIR_PIN(motor), direction);
-    if (direction){
-        pwm_set_gpio_level(GET_MOTOR_PWM_PIN(motor), 0xFFFF-level);
+
+void motor_set_pwm(uint8_t motor, int32_t level){
+    if (level >= 0){
+        pwm_set_gpio_level(GET_MOTOR_A_PIN(motor), level);
+        pwm_set_gpio_level(GET_MOTOR_B_PIN(motor), 0);
     }
     else{
-        pwm_set_gpio_level(GET_MOTOR_PWM_PIN(motor), level);
+        pwm_set_gpio_level(GET_MOTOR_A_PIN(motor), 0);
+        pwm_set_gpio_level(GET_MOTOR_B_PIN(motor), -level);
     }
-
 }
