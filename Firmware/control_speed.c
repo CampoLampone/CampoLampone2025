@@ -12,12 +12,9 @@ PID_t motors_pid[MOTOR_COUNT] = { [0 ... MOTOR_COUNT-1] = {
 }};
 
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
-    static int last_count[ENCODER_COUNT] = {0};
-    int count_now = encoder_get_count(encoder);
-    int delta_count = count_now - last_count[encoder];
-    last_count[encoder] = count_now;
-    int measured_speed = (float) delta_count / delta_ms * 1.0e3;
-    return (float) measured_speed / 617.3544 * 60.0;
+    substep_update(&encoders_states[encoder]);
+    int measured_speed = encoders_states[encoder].speed;
+    return (float) measured_speed / 256.0 / 617.3544 * 60.0;
 }
 
 float filter_speed_rpm(uint8_t encoder, float v) {
@@ -39,10 +36,10 @@ int clamp_int(int val, int min, int max) {
 void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
     PID_t* motor_pid = &motors_pid[side];
     float measured_rpm = compute_encoder_rpm(side, delta_ms);
-    float filtered_rpm = filter_speed_rpm(side, measured_rpm);
+    // float filtered_rpm = filter_speed_rpm(side, measured_rpm);
     // printf("Encoder speed: %i delta: %f\n", measured_speed, delta_ms);
-    printf("%f,%i,", filtered_rpm, target_speed);
-    motor_pid->measured_value = filtered_rpm;
+    printf("%f,%i,", measured_rpm, target_speed);
+    motor_pid->measured_value = measured_rpm;
     motor_pid->dt = delta_ms;
     motor_pid->setpoint = target_speed;
     pid_compute(motor_pid);

@@ -13,6 +13,7 @@ enum command {
 };
 
 uint16_t control[2] = {0, 0};
+substep_state_t encoders_states[ENCODER_COUNT];
 
 int main() {
     motor_init();
@@ -30,7 +31,7 @@ int main() {
             control_speed(control, delta_us / 1000.0);
             break;
         }
-        sleep_ms(5);
+        sleep_ms(10);
 
         if (current_time - wrum_time > 5e6) {
             wrum_time = current_time;
