@@ -69,7 +69,7 @@ static int substep_calc_speed(int delta_substep, int delta_us)
 // main functions to be used by user code
 
 // initialize the substep state structure and start PIO code
-static void substep_init_state(PIO pio, int sm, int pin_a, substep_state_t *state)
+void substep_init_state(PIO pio, int sm, int pin_a, substep_state_t *state)
 {
     int forward;
 

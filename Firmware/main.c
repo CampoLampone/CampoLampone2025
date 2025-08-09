@@ -1,4 +1,5 @@
 #include "control_speed.h"
+#include <stdio.h>
 #include "pico/stdio_usb.h"
 #include <pico/time.h>
 #include "motor.h"
@@ -53,7 +54,26 @@ int main() {
         motor_set_pwm(MOTOR_LEFT, 65000);
         sleep_ms(2000);
     }
+#elif TEST_MODE == 2
+    uint last_position = 0;
+    int last_speed = 0;
+    uint last_raw_step = 0;
+     while (true){
+        // read the PIO and update the state data
+        substep_state_t* state = &encoders_states[ENCODER_RIGHT];
+        substep_update(state);
 
+        if (last_position != state->position || last_speed != state->speed || last_raw_step != state->raw_step) {
+            // print out the result
+            printf("pos: %-10d  speed: %-10d  raw_steps: %-10d\n", state->position, state->speed, state->raw_step);
+            last_position = state->position;
+            last_speed = state->speed;
+            last_raw_step = state->raw_step;
+        }
+
+        // run at roughly 100Hz
+        sleep_ms(10);
+    }
 #else
     #error "End of tests"
 #endif

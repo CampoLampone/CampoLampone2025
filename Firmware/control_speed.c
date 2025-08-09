@@ -7,14 +7,14 @@
 
 PID_t motors_pid[MOTOR_COUNT] = { [0 ... MOTOR_COUNT-1] = {
     .kp = 1.0,
-    .ki = 0.0,
+    .ki = 0.01,
     .kd = 0.0,
 }};
 
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
     substep_update(&encoders_states[encoder]);
     int measured_speed = encoders_states[encoder].speed;
-    return (float) measured_speed / 256.0 / 617.3544 * 60.0;
+    return (float) measured_speed / 64.0 / 617.3544 * 60.0;
 }
 
 float filter_speed_rpm(uint8_t encoder, float v) {
@@ -44,8 +44,8 @@ void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
     motor_pid->setpoint = target_speed;
     pid_compute(motor_pid);
     int pwm_value = motor_pid->output * 256;
-    pwm_value = clamp_int(pwm_value, 0, 0xFFFF);
-    // motor_set_pwm(side, DIRECTION_FORWARD, pwm_value);
+    pwm_value = clamp_int(pwm_value, -0xFFFF, 0xFFFF);
+    motor_set_pwm(side, pwm_value);
 }
 
 void control_speed(uint16_t target_speed[MOTOR_COUNT], float delta_ms) {
