@@ -1,8 +1,20 @@
+#include <stdint.h>
+#include <stdio.h>
+#include "spi.h"
+#include "tests.h"
 #include "encoder.h"
 #include "motor.h"
+#include "config.h"
 
-void do_tests()
-{
+void test_spi_callback(uint8_t *data){
+    printf("Received: ");
+        for (int i = 0; i < 8; i++) {
+            printf("%02X ", data[i]);
+        }
+        printf("\n");
+}
+
+void do_tests(){
     #if TEST_MODE == 0
     #elif TEST_MODE == 1
         while (true){
@@ -32,6 +44,10 @@ void do_tests()
 
             // run at roughly 100Hz
             sleep_ms(10);
+        }
+    #elif TEST_MODE == 3
+        spi_init(test_spi_callback);
+        while (true){
         }
     #else
         #error "End of tests"

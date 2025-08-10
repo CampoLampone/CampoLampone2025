@@ -33,7 +33,7 @@ int clamp_int(int val, int min, int max) {
     return val;
 }
 
-void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
+void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
     PID_t* motor_pid = &motors_pid[side];
     float measured_rpm = compute_encoder_rpm(side, delta_ms);
     // float filtered_rpm = filter_speed_rpm(side, measured_rpm);
@@ -48,7 +48,7 @@ void control_motor_speed(int target_speed, uint8_t side, float delta_ms){
     motor_set_pwm(side, pwm_value);
 }
 
-void control_speed(uint16_t target_speed[MOTOR_COUNT], float delta_ms) {
+void control_speed(int16_t target_speed[MOTOR_COUNT], float delta_ms) {
     for (int motor; motor < MOTOR_COUNT; motor++) {
         control_motor_speed(target_speed[motor], motor, delta_ms);
     }

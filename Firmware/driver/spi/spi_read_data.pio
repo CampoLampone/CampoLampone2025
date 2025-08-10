@@ -1,0 +1,33 @@
+
+.pio_version 0
+
+.program spi_read_data
+    wait 0 pin 2
+    wait 1 pin 2
+    in pins, 1
+
+% c-sdk {
+static inline void spi_read_data_program_init(PIO pio, uint sm, uint offset, uint pin) {
+    pio_sm_config c = spi_read_data_program_get_default_config(offset);
+
+    sm_config_set_in_pins(&c, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 2, false);
+
+    pio_gpio_init(pio, pin);
+    pio_gpio_init(pio, pin + 2);
+
+    sm_config_set_in_shift(
+        &c,
+        false, // shift left
+        true,  // autopush
+        8      // every 8 bits
+    );
+
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
+
+//TODO: implement transmiting data

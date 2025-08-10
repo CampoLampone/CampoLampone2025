@@ -5,7 +5,11 @@
 #include "motor.h"
 #include "encoder.h"
 #include "config.h"
+#include "spi.h"
+
+#if TEST_MODE > 0
 #include "tests.h"
+#endif
 
 enum command {
     COMMAND_SPEED,
@@ -14,14 +18,34 @@ enum command {
     COMMAND_COAST
 };
 
-uint16_t control[2] = {0, 0};
+int16_t control[2] = {0, 0};
 substep_state_t encoders_states[ENCODER_COUNT];
 
+void spi_callback(uint8_t *data){
+    printf("Received: ");
+        for (int i = 0; i < 8; i++) {
+            printf("%02X ", data[i]);
+        }
+        printf("\n");
+        switch (data[0]) {
+            case 0x1A:
+                control[0] = (data[1] << 8) | data[2];
+                break;
+            case 0x2A:
+                control[1] = (data[1] << 8) | data[2];
+                break;
+        }
+}
+
+
 int main() {
+    sleep_ms(2000);
+    printf("Program Started\n");
+#if TEST_MODE == 0
     motor_init();
     stdio_usb_init();
     encoder_init();
-#if TEST_MODE == 0
+    spi_init(spi_callback);
     absolute_time_t last_time = get_absolute_time();
     int wrum_time = last_time;
     while (true) {
