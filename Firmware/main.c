@@ -57,11 +57,11 @@ void spi_callback(uint8_t *data){
 
 
 int main() {
+    stdio_usb_init();
     sleep_ms(2000);
     printf("Program Started\n");
 #if TEST_MODE == 0
     motor_init();
-    stdio_usb_init();
     encoder_init();
     spi_init(spi_callback);
     speed_controller_init(PID_KP, PID_KI, PID_KD);
