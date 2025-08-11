@@ -11,7 +11,7 @@ PID_t motors_pid[MOTOR_COUNT];
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
     substep_update(&encoders_states[encoder]);
     int measured_speed = encoders_states[encoder].speed;
-    return (float) measured_speed / SUBSTEPS_PER_PULSE / (PULSES_PER_WHEEL_ROTATION) * 60.0;
+    return (float) measured_speed / SUBSTEPS_PER_PULSE / PULSES_PER_WHEEL_ROTATION * 60.0;
 }
 
 int clamp_pid_to_pwm(int val) {

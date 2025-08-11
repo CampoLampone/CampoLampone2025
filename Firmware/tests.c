@@ -1,5 +1,6 @@
 #include "config.h"
 #if TEST_MODE != 0
+#include "speed_controller.h"
 #include <stdint.h>
 #include <stdio.h>
 #include "spi.h"
@@ -31,10 +32,12 @@ void do_tests(){
             sleep_ms(2000);
         }
     #elif TEST_MODE == 2
+        encoder_init();
+        extern substep_state_t encoders_states[ENCODER_COUNT];
         uint last_position = 0;
         int last_speed = 0;
         uint last_raw_step = 0;
-         while (true){
+        while (true){
             // read the PIO and update the state data
             substep_state_t* state = &encoders_states[ENCODER_RIGHT];
             substep_update(state);
@@ -53,6 +56,34 @@ void do_tests(){
     #elif TEST_MODE == 3
         spi_init(test_spi_callback);
         while (true){
+        }
+    
+    #elif TEST_MODE == 4
+        motor_init();
+        stdio_usb_init();
+        encoder_init();
+        extern substep_state_t encoders_states[ENCODER_COUNT];
+        int16_t control[2] = {0, 0};
+        speed_controller_init(PID_KP, PID_KI, PID_KD);
+        absolute_time_t last_time = get_absolute_time();
+        int wrum_time = last_time;
+        while (true) {
+            absolute_time_t current_time = get_absolute_time();
+            int64_t delta_us = absolute_time_diff_us(last_time, current_time);
+            last_time = current_time;
+            control_speed(control, delta_us / 1000.0);
+            sleep_ms(10);
+
+            if (current_time - wrum_time > 2e6) {
+                wrum_time = current_time;
+                if (control[0] == 0) {
+                    control[0] = -60;
+                    control[1] = 60;
+                } else {
+                    control[0] = 0;
+                    control[1] = 0;
+                }
+            }
         }
     #else
         #error "End of tests"
