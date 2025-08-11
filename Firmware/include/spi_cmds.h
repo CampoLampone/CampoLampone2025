@@ -1,0 +1,8 @@
+#pragma once
+
+#define SPI_CMD_NEXT_MOTOR 0x10
+
+#define SPI_CMD_SET_SPEED_BASE 0x1A
+#define SPI_CMD_SET_POSITION_BASE 0x1B
+#define SPI_CMD_COAST 0x30
+#define SPI_CMD_BRAKE 0x40

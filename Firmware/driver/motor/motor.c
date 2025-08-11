@@ -25,9 +25,13 @@ void motor_init(void){
 }
 
 void motor_brake(uint8_t motor){
+    pwm_set_gpio_level(GET_MOTOR_A_PIN(motor), 0xFFFF);
+    pwm_set_gpio_level(GET_MOTOR_B_PIN(motor), 0xFFFF);
 }
 
 void motor_coast(uint8_t motor){
+    pwm_set_gpio_level(GET_MOTOR_A_PIN(motor), 0x0);
+    pwm_set_gpio_level(GET_MOTOR_B_PIN(motor), 0x0);
 }
 
 

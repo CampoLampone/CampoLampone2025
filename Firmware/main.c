@@ -1,4 +1,5 @@
 #include "speed_controller.h"
+#include <stdint.h>
 #include <stdio.h>
 #include "pico/stdio_usb.h"
 #include <pico/time.h>
@@ -6,6 +7,7 @@
 #include "encoder.h"
 #include "config.h"
 #include "spi.h"
+#include "spi_cmds.h"
 
 #if TEST_MODE > 0
 #include "tests.h"
@@ -14,25 +16,41 @@
 enum command {
     COMMAND_SPEED,
     COMMAND_POSITION,
+    COMMAND_BRAKE,
     COMMAND_STOP,
     COMMAND_COAST
 };
 
-int16_t control[2] = {0, 0};
+int16_t speed_target[MOTOR_COUNT] = {0, 0};
+int8_t position_target[MOTOR_COUNT] = {0, 0};
+uint8_t current_cmd = COMMAND_COAST;
 substep_state_t encoders_states[ENCODER_COUNT];
 
 void spi_callback(uint8_t *data){
-    printf("Received: ");
-        for (int i = 0; i < 8; i++) {
-            printf("%02X ", data[i]);
-        }
-        printf("\n");
         switch (data[0]) {
-            case 0x1A:
-                control[0] = (data[1] << 8) | data[2];
+            case SPI_CMD_SET_SPEED_BASE:
+                current_cmd = COMMAND_SPEED;
+                speed_target[0] = (data[1] << 8) | data[2];
                 break;
-            case 0x2A:
-                control[1] = (data[1] << 8) | data[2];
+            case SPI_CMD_SET_SPEED_BASE + SPI_CMD_NEXT_MOTOR:
+                current_cmd = COMMAND_SPEED;
+                speed_target[1] = (data[1] << 8) | data[2];
+                break;
+            case SPI_CMD_SET_POSITION_BASE:
+                current_cmd = COMMAND_POSITION;
+                position_target[0] = data[1];
+                speed_target[0] = (data[2] << 8) | data[3];
+                break;
+            case SPI_CMD_SET_POSITION_BASE + SPI_CMD_NEXT_MOTOR:
+                current_cmd = COMMAND_POSITION;
+                position_target[1] = data[1];
+                speed_target[1] = (data[2] << 8) | data[3];
+                break;
+            case SPI_CMD_COAST:
+                current_cmd = COMMAND_COAST;
+                break;
+            case SPI_CMD_BRAKE:
+                current_cmd = COMMAND_BRAKE;
                 break;
         }
 }
@@ -53,23 +71,26 @@ int main() {
         absolute_time_t current_time = get_absolute_time();
         int64_t delta_us = absolute_time_diff_us(last_time, current_time);
         last_time = current_time;
-        switch (COMMAND_SPEED) {
+        switch (current_cmd) {
             case (COMMAND_SPEED):
-            control_speed(control, delta_us / 1000.0);
+            control_speed(speed_target, delta_us / 1000.0);
+            break;
+            case (COMMAND_POSITION):
+            // TODO: Implement position control
+            // control_position(position_target, speed_target, delta_us / 1000.0);
+            break;
+            case (COMMAND_COAST):
+            for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+                motor_coast(motor);
+            }
+            break;
+            case (COMMAND_BRAKE):
+            for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+                motor_brake(motor);
+            }
             break;
         }
-        sleep_ms(10);
-
-        if (current_time - wrum_time > 2e6) {
-            wrum_time = current_time;
-            if (control[0] == 0) {
-                control[0] = -60;
-                control[1] = 60;
-            } else {
-                control[0] = 0;
-                control[1] = 0;
-            }
-        }
+        sleep_ms(10); // loop delay for PID
     }
 #elif TEST_MODE > 0
     do_tests();
