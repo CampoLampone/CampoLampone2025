@@ -4,53 +4,44 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "speed_controller.h"
 
-PID_t motors_pid[MOTOR_COUNT] = { [0 ... MOTOR_COUNT-1] = {
-    .kp = 1.0,
-    .ki = 0.01,
-    .kd = 0.0,
-}};
+PID_t motors_pid[MOTOR_COUNT];
 
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
     substep_update(&encoders_states[encoder]);
     int measured_speed = encoders_states[encoder].speed;
-    return (float) measured_speed / 64.0 / 617.3544 * 60.0;
+    return (float) measured_speed / SUBSTEPS_PER_PULSE / PULSES_PER_WHEEL_ROTATION * 60.0;
 }
 
-float filter_speed_rpm(uint8_t encoder, float v) {
-    static float v_prev[ENCODER_COUNT] = {0};
-    static float v_filt[ENCODER_COUNT] = {0};
-
-    v_filt[encoder] = 0.854 * v_filt[encoder] + 0.0728 * v + 0.0728 * v_prev[encoder];
-    v_prev[encoder] = v;
-
-    return  v_filt[encoder];
-}
-
-int clamp_int(int val, int min, int max) {
-    if (val < min) return min;
-    if (val > max) return max;
+int clamp_pid_to_pwm(int val) {
+    val = val * PID_TO_PWM_SCALE;
+    if (val < -PWM_MAX) return -PWM_MAX;
+    if (val > PWM_MAX) return PWM_MAX;
     return val;
 }
 
 void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
-    PID_t* motor_pid = &motors_pid[side];
     float measured_rpm = compute_encoder_rpm(side, delta_ms);
-    // float filtered_rpm = filter_speed_rpm(side, measured_rpm);
-    // printf("Encoder speed: %i delta: %f\n", measured_speed, delta_ms);
+    motors_pid[side].measured_value = measured_rpm;
+    motors_pid[side].dt = delta_ms;
+    motors_pid[side].setpoint = target_speed;
+    pid_compute(&motors_pid[side]);
+    motor_set_pwm(side, clamp_pid_to_pwm(motors_pid[side].output));
     printf("%f,%i,", measured_rpm, target_speed);
-    motor_pid->measured_value = measured_rpm;
-    motor_pid->dt = delta_ms;
-    motor_pid->setpoint = target_speed;
-    pid_compute(motor_pid);
-    int pwm_value = motor_pid->output * 256;
-    pwm_value = clamp_int(pwm_value, -0xFFFF, 0xFFFF);
-    motor_set_pwm(side, pwm_value);
 }
 
 void control_speed(int16_t target_speed[MOTOR_COUNT], float delta_ms) {
-    for (int motor; motor < MOTOR_COUNT; motor++) {
+    for (int motor = 0; motor < MOTOR_COUNT; motor++) {
         control_motor_speed(target_speed[motor], motor, delta_ms);
     }
     printf("\n");
+}
+
+void speed_controller_init(float kp, float ki, float kd) {
+    for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+        motors_pid[motor].kp = kp;
+        motors_pid[motor].ki = ki;
+        motors_pid[motor].kd = kd;
+    }
 }
