@@ -60,10 +60,10 @@ int main() {
         }
         sleep_ms(10);
 
-        if (current_time - wrum_time > 5e6) {
+        if (current_time - wrum_time > 2e6) {
             wrum_time = current_time;
             if (control[0] == 0) {
-                control[0] = 60;
+                control[0] = -60;
                 control[1] = 60;
             } else {
                 control[0] = 0;

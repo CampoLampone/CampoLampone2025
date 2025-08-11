@@ -19,6 +19,9 @@ void test_spi_callback(uint8_t *data){
 void do_tests(){
     #if TEST_MODE == 0
     #elif TEST_MODE == 1
+        motor_init();
+        stdio_usb_init();
+        encoder_init();
         while (true){
             motor_set_pwm(MOTOR_RIGHT, 65000);
             motor_set_pwm(MOTOR_LEFT, -65000);
