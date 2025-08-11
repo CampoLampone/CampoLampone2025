@@ -1,10 +1,12 @@
+#include "config.h"
+#if TEST_MODE != 0
 #include <stdint.h>
 #include <stdio.h>
 #include "spi.h"
 #include "tests.h"
 #include "encoder.h"
 #include "motor.h"
-#include "config.h"
+
 
 void test_spi_callback(uint8_t *data){
     printf("Received: ");
@@ -53,3 +55,4 @@ void do_tests(){
         #error "End of tests"
     #endif
 }
+#endif

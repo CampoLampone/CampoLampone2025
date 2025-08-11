@@ -1,6 +1,5 @@
 #include "spi.h"
 #include <stdio.h>
-#include "pico/stdlib.h"
 #include "hardware/pio.h"
 #include "hardware/dma.h"
 #include "spi_read_data.pio.h"
@@ -44,7 +43,7 @@ void setup_dma(){
     channel_config_set_read_increment(&c, false);
     channel_config_set_write_increment(&c, true);
     channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
-    channel_config_set_dreq(&c, pio_get_dreq(pio, read_data_sm, false));\
+    channel_config_set_dreq(&c, pio_get_dreq(pio, read_data_sm, false));
     dma_channel_configure(dma_chan, &c, buffer, &pio->rxf[read_data_sm], BUF_SIZE, false);
 }
 
