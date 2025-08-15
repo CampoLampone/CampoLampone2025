@@ -38,6 +38,15 @@ void control_speed(int16_t target_speed[MOTOR_COUNT], float delta_ms) {
     printf("\n");
 }
 
+void clear_pid_cache(){
+    for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+        motors_pid[motor].integral = 0;
+        motors_pid[motor].prev_error = 0;
+        motors_pid[motor].prev_error = 0;
+        motors_pid[motor].output = 0;
+    }
+}
+
 void speed_controller_init(float kp, float ki, float kd) {
     for (int motor = 0; motor < MOTOR_COUNT; motor++) {
         motors_pid[motor].kp = kp;

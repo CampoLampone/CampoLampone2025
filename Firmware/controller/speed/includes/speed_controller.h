@@ -13,4 +13,5 @@
 #define PWM_MAX 0xFFFF
 
 void speed_controller_init(float kp, float ki, float kd);
+void clear_pid_cache();
 void control_speed(int16_t target_speed[2], float delta_ms);

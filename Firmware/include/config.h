@@ -5,4 +5,4 @@
 #define PID_KD 0.0f
 
 
-#define TEST_MODE 2
+#define TEST_MODE 4

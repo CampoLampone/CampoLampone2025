@@ -6,7 +6,6 @@
 #include "motor.h"
 #include "encoder.h"
 #include "config.h"
-#include "spi.h"
 #include "spi_cmds.h"
 
 #if TEST_MODE > 0
@@ -31,10 +30,12 @@ void spi_callback(uint8_t *data){
             case SPI_CMD_SET_SPEED_BASE:
                 current_cmd = COMMAND_SPEED;
                 speed_target[0] = (data[1] << 8) | data[2];
+                clear_pid_cache();
                 break;
             case SPI_CMD_SET_SPEED_BASE + SPI_CMD_NEXT_MOTOR:
                 current_cmd = COMMAND_SPEED;
                 speed_target[1] = (data[1] << 8) | data[2];
+                clear_pid_cache();
                 break;
             case SPI_CMD_SET_POSITION_BASE:
                 current_cmd = COMMAND_POSITION;
@@ -73,22 +74,22 @@ int main() {
         last_time = current_time;
         switch (current_cmd) {
             case (COMMAND_SPEED):
-            control_speed(speed_target, delta_us / 1000.0);
-            break;
+                control_speed(speed_target, delta_us / 1000.0);
+                break;
             case (COMMAND_POSITION):
-            // TODO: Implement position control
-            // control_position(position_target, speed_target, delta_us / 1000.0);
-            break;
+                // TODO: Implement position control
+                // control_position(position_target, speed_target, delta_us / 1000.0);
+                break;
             case (COMMAND_COAST):
-            for (int motor = 0; motor < MOTOR_COUNT; motor++) {
-                motor_coast(motor);
-            }
-            break;
+                for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+                    motor_coast(motor);
+                }
+                break;
             case (COMMAND_BRAKE):
-            for (int motor = 0; motor < MOTOR_COUNT; motor++) {
-                motor_brake(motor);
-            }
-            break;
+                for (int motor = 0; motor < MOTOR_COUNT; motor++) {
+                    motor_brake(motor);
+                }
+                break;
         }
         sleep_ms(10); // loop delay for PID
     }

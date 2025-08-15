@@ -3,7 +3,6 @@
 #include "speed_controller.h"
 #include <stdint.h>
 #include <stdio.h>
-#include "spi.h"
 #include "tests.h"
 #include "encoder.h"
 #include "motor.h"
@@ -57,7 +56,7 @@ void do_tests(){
         spi_init(test_spi_callback);
         while (true){
         }
-    
+
     #elif TEST_MODE == 4
         motor_init();
         stdio_usb_init();
@@ -73,17 +72,6 @@ void do_tests(){
             last_time = current_time;
             control_speed(control, delta_us / 1000.0);
             sleep_ms(10);
-
-            if (current_time - wrum_time > 2e6) {
-                wrum_time = current_time;
-                if (control[0] == 0) {
-                    control[0] = -60;
-                    control[1] = 60;
-                } else {
-                    control[0] = 0;
-                    control[1] = 0;
-                }
-            }
         }
     #else
         #error "End of tests"
