@@ -1,0 +1,13 @@
+services:
+  campo-traffic-nginx:
+    restart: always
+    build: campo
+    ports:
+      - "8080:80"
+  campo-traffic-backend:
+    restart: always
+    build: server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./store:/app/store
