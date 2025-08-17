@@ -12,6 +12,10 @@
 
 #define PWM_MAX 0xFFFF
 
+#define STALL_THRESHOLD 1.0  // in RPM
+#define STALL_TIME_MS 100    // Time in milliseconds
+
 void speed_controller_init(float kp, float ki, float kd);
+void reset_emergency_stop();
 void clear_pid_cache();
 void control_speed(int16_t target_speed[2], float delta_ms);

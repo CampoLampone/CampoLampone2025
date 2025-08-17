@@ -1,6 +1,6 @@
 #include "config.h"
-#include "spi.h"
 #if TEST_MODE != 0
+#include "spi.h"
 #include "speed_controller.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -65,6 +65,7 @@ void do_tests(){
         extern substep_state_t encoders_states[ENCODER_COUNT];
         int16_t control[2] = {0, 0};
         speed_controller_init(PID_KP, PID_KI, PID_KD);
+        reset_emergency_stop();
         absolute_time_t last_time = get_absolute_time();
         int wrum_time = last_time;
         while (true) {

@@ -2,11 +2,15 @@
 #include "motor.h"
 #include "pid.h"
 #include <assert.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "speed_controller.h"
 
 PID_t motors_pid[MOTOR_COUNT];
+volatile bool emergencyStopFlag = false;
+float fromLastStallCheck = 0;
 
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
     substep_update(&encoders_states[encoder]);
@@ -27,8 +31,16 @@ void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
     motors_pid[side].dt = delta_ms;
     motors_pid[side].setpoint = target_speed;
     pid_compute(&motors_pid[side]);
-    motor_set_pwm(side, clamp_pid_to_pwm(motors_pid[side].output));
+    motor_set_pwm(side, emergencyStopFlag ? 0 : clamp_pid_to_pwm(motors_pid[side].output));
     printf("%f,%i,", measured_rpm, target_speed);
+
+    fromLastStallCheck += delta_ms;
+    if (abs(target_speed) <= STALL_THRESHOLD) fromLastStallCheck = 0;
+    else if (!emergencyStopFlag && fromLastStallCheck >= STALL_TIME_MS) {
+        fromLastStallCheck = 0;
+        emergencyStopFlag = (measured_rpm <= STALL_THRESHOLD);
+        if (emergencyStopFlag) printf("Motors STALL!");
+    }
 }
 
 void control_speed(int16_t target_speed[MOTOR_COUNT], float delta_ms) {
@@ -53,4 +65,8 @@ void speed_controller_init(float kp, float ki, float kd) {
         motors_pid[motor].ki = ki;
         motors_pid[motor].kd = kd;
     }
+}
+
+void reset_emergency_stop() {
+    emergencyStopFlag = false;
 }

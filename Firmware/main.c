@@ -67,6 +67,7 @@ int main() {
     encoder_init();
     spi_init(spi_callback);
     speed_controller_init(PID_KP, PID_KI, PID_KD);
+    reset_emergency_stop();
     absolute_time_t last_time = get_absolute_time();
     int wrum_time = last_time;
     while (true) {
