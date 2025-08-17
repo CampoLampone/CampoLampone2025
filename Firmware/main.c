@@ -6,6 +6,7 @@
 #include "motor.h"
 #include "encoder.h"
 #include "config.h"
+#include "spi.h"
 #include "spi_cmds.h"
 
 #if TEST_MODE > 0

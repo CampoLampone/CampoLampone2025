@@ -1,4 +1,5 @@
 #include "config.h"
+#include "spi.h"
 #if TEST_MODE != 0
 #include "speed_controller.h"
 #include <stdint.h>
