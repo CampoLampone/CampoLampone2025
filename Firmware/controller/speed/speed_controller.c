@@ -66,8 +66,8 @@ void speed_controller_init(float kp, float ki, float kd) {
         motors_pid[motor].kp = kp;
         motors_pid[motor].ki = ki;
         motors_pid[motor].kd = kd;
-        motors_pid[motor].integral_max = PID_I_MAX;
-        motors_pid[motor].integral_min = -PID_I_MAX;
+        // motors_pid[motor].integral_max = PID_I_MAX;
+        // motors_pid[motor].integral_min = -PID_I_MAX;
     }
 }
 
