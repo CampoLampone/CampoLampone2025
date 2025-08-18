@@ -54,7 +54,6 @@ void clear_pid_cache(){
     for (int motor = 0; motor < MOTOR_COUNT; motor++) {
         motors_pid[motor].integral = 0;
         motors_pid[motor].prev_error = 0;
-        motors_pid[motor].prev_error = 0;
         motors_pid[motor].output = 0;
     }
 }
