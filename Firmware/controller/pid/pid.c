@@ -5,8 +5,8 @@ void pid_compute(PID_t *pid) {
     float error = pid->setpoint - pid->measured_value;
 
     pid->integral += error * pid->dt;
-    if (pid->integral > pid->integral_max) pid->integral = pid->integral_max;
-    if (pid->integral < pid->integral_min) pid->integral = pid->integral_min;
+    // if (pid->integral > pid->integral_max) pid->integral = pid->integral_max;
+    // if (pid->integral < pid->integral_min) pid->integral = pid->integral_min;
 
     float derivative = (error - pid->prev_error) / pid->dt;
 

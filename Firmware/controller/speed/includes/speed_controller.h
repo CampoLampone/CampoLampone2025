@@ -9,7 +9,7 @@
 #define PULSES_PER_WHEEL_ROTATION (PULSES_PER_MOTOR_ROTATION * GEARBOX_RATIO)
 
 #define PID_TO_PWM_SCALE 256
-#define PID_I_MAX 256       // TODO: **Magic value** (find working number)
+// #define PID_I_MAX 256       // TODO: **Magic value** (find working number)
 
 #define PWM_MAX 0xFFFF
 
