@@ -54,6 +54,9 @@ void spi_callback(uint8_t *data){
             case SPI_CMD_BRAKE:
                 current_cmd = COMMAND_BRAKE;
                 break;
+            case SPI_CMD_REL_ESTOP:
+                reset_emergency_stop();
+                break;
         }
 }
 
