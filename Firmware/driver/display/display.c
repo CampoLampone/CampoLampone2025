@@ -58,7 +58,7 @@ inline static void ssd1306_write(ssd1306_t *p, uint8_t val) {
     fancy_write(p->i2c_i, p->address, d, 2, "ssd1306_write");
 }
 
-bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance) {
+bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, bool flip, uint8_t address, i2c_inst_t *i2c_instance) {
     p->width=width;
     p->height=height;
     p->pages=height/8;
@@ -90,8 +90,8 @@ bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address
         // charge pump
         SET_CHARGE_PUMP,
         p->external_vcc?0x10:0x14,
-        SET_SEG_REMAP | 0x01,           // column addr 127 mapped to SEG0
-        SET_COM_OUT_DIR | 0x08,         // scan from COM[N] to COM0
+        SET_SEG_REMAP | (flip ? 0x00 : 0x01),           // column addr 127 mapped to SEG0 (or not)
+        SET_COM_OUT_DIR | (flip ? 0x00 : 0x08),         // scan from COM[N] to COM0 (or not)
         SET_COM_PIN_CFG,
         width>2*height?0x02:0x12,
         // display
@@ -303,4 +303,17 @@ void ssd1306_show(ssd1306_t *p) {
     *(p->buffer-1)=0x40;
 
     fancy_write(p->i2c_i, p->address, p->buffer-1, p->bufsize+1, "ssd1306_show");
+}
+
+void ssd1306_draw_struct(ssd1306_t *p, display_data_t *data) {
+    ssd1306_draw_string(p, 5, 0, IP_SCALE, data->ip);
+    ssd1306_draw_string(p, 6, 16, MSG_SCALE, data->msg);
+    ssd1306_draw_string(p, 5, 48, STUFF_SCALE, data->stuff);
+}
+
+void ssd1306_gpio_init(uint8_t sda_pin, uint8_t scl_pin) {
+    gpio_set_function(sda_pin, GPIO_FUNC_I2C);
+    gpio_set_function(scl_pin, GPIO_FUNC_I2C);
+    gpio_pull_up(sda_pin);
+    gpio_pull_up(scl_pin);
 }

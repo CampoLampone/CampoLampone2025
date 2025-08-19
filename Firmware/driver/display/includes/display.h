@@ -71,11 +71,26 @@ typedef struct {
 } ssd1306_t;
 
 /**
+*	@brief stuff to display using
+*/
+#define DISP_BUF(scale) 128/(scale*5)
+#define IP_SCALE 2
+#define MSG_SCALE 4
+#define STUFF_SCALE 2
+
+typedef struct {
+    char ip[DISP_BUF(2)];
+    char msg[DISP_BUF(4)];
+    char stuff[DISP_BUF(2)];
+} display_data_t;
+
+/**
 *	@brief initialize display
 *
 *	@param[in] p : pointer to instance of ssd1306_t
 *	@param[in] width : width of display
 *	@param[in] height : heigth of display
+*   @param[in] flip : flips display 180 deg
 *	@param[in] address : i2c address of display
 *	@param[in] i2c_instance : instance of i2c connection
 *	
@@ -83,7 +98,7 @@ typedef struct {
 *	@retval true for Success
 *	@retval false if initialization failed
 */
-bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, uint8_t address, i2c_inst_t *i2c_instance);
+bool ssd1306_init(ssd1306_t *p, uint16_t width, uint16_t height, bool flip, uint8_t address, i2c_inst_t *i2c_instance);
 
 /**
 *	@brief deinitialize display
@@ -270,5 +285,15 @@ void ssd1306_draw_string_with_font(ssd1306_t *p, uint32_t x, uint32_t y, uint32_
 	@param[in] s : text to draw
 */
 void ssd1306_draw_string(ssd1306_t *p, uint32_t x, uint32_t y, uint32_t scale, const char *s);
+
+/**
+	@brief draw string with builtin font
+
+	@param[in] p : instance of display
+	@param[in] x : display_data_t structure with info to display
+*/
+void ssd1306_draw_struct(ssd1306_t *p, display_data_t *data);
+
+void ssd1306_gpio_init(uint8_t sda_pin, uint8_t scl_pin);
 
 #endif

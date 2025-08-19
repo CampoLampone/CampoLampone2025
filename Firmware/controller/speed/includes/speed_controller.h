@@ -1,5 +1,7 @@
 #pragma once
 
+#include "motor.h"
+#include <stdbool.h>
 #include <stdint.h>
 
 #define SUBSTEPS_PER_PULSE 64.0
@@ -19,4 +21,6 @@
 void speed_controller_init(float kp, float ki, float kd);
 void reset_emergency_stop();
 void clear_pid_cache();
-void control_speed(int16_t target_speed[2], float delta_ms);
+void control_speed(int16_t target_speed[MOTOR_COUNT], float delta_ms);
+float get_rpm(uint8_t side);
+bool get_emergency_stop();

@@ -20,6 +20,7 @@
 //---------------------------//
 //   BOARD PIN DEFINITIONS   //
 //---------------------------//
+#include "boards/pico.h" // IWYU pragma: keep
 
 // --- MOTOR PINS ---
 #define BOARD_MOTOR_EEP 10

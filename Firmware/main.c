@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include "pico/stdio_usb.h"
 #include <pico/time.h>
+#include "hardware/i2c.h"
 #include "motor.h"
 #include "encoder.h"
+#include "display.h"
 #include "config.h"
 #include "spi.h"
 #include "spi_cmds.h"
@@ -27,37 +29,37 @@ uint8_t current_cmd = COMMAND_COAST;
 substep_state_t encoders_states[ENCODER_COUNT];
 
 void spi_callback(uint8_t *data){
-        switch (data[0]) {
-            case SPI_CMD_SET_SPEED_BASE:
-                current_cmd = COMMAND_SPEED;
-                speed_target[0] = (data[1] << 8) | data[2];
-                clear_pid_cache();
-                break;
-            case SPI_CMD_SET_SPEED_BASE + SPI_CMD_NEXT_MOTOR:
-                current_cmd = COMMAND_SPEED;
-                speed_target[1] = (data[1] << 8) | data[2];
-                clear_pid_cache();
-                break;
-            case SPI_CMD_SET_POSITION_BASE:
-                current_cmd = COMMAND_POSITION;
-                position_target[0] = data[1];
-                speed_target[0] = (data[2] << 8) | data[3];
-                break;
-            case SPI_CMD_SET_POSITION_BASE + SPI_CMD_NEXT_MOTOR:
-                current_cmd = COMMAND_POSITION;
-                position_target[1] = data[1];
-                speed_target[1] = (data[2] << 8) | data[3];
-                break;
-            case SPI_CMD_COAST:
-                current_cmd = COMMAND_COAST;
-                break;
-            case SPI_CMD_BRAKE:
-                current_cmd = COMMAND_BRAKE;
-                break;
-            case SPI_CMD_REL_ESTOP:
-                reset_emergency_stop();
-                break;
-        }
+    switch (data[0]) {
+        case SPI_CMD_SET_SPEED_BASE:
+            current_cmd = COMMAND_SPEED;
+            speed_target[0] = (data[1] << 8) | data[2];
+            clear_pid_cache();
+            break;
+        case SPI_CMD_SET_SPEED_BASE + SPI_CMD_NEXT_MOTOR:
+            current_cmd = COMMAND_SPEED;
+            speed_target[1] = (data[1] << 8) | data[2];
+            clear_pid_cache();
+            break;
+        case SPI_CMD_SET_POSITION_BASE:
+            current_cmd = COMMAND_POSITION;
+            position_target[0] = data[1];
+            speed_target[0] = (data[2] << 8) | data[3];
+            break;
+        case SPI_CMD_SET_POSITION_BASE + SPI_CMD_NEXT_MOTOR:
+            current_cmd = COMMAND_POSITION;
+            position_target[1] = data[1];
+            speed_target[1] = (data[2] << 8) | data[3];
+            break;
+        case SPI_CMD_COAST:
+            current_cmd = COMMAND_COAST;
+            break;
+        case SPI_CMD_BRAKE:
+            current_cmd = COMMAND_BRAKE;
+            break;
+        case SPI_CMD_REL_ESTOP:
+            reset_emergency_stop();
+            break;
+    }
 }
 
 
@@ -67,10 +69,21 @@ int main() {
     printf("Program Started\n");
 #if TEST_MODE == 0
     motor_init();
-    encoder_init();
+    encoders_init();
     spi_init(spi_callback);
     speed_controller_init(PID_KP, PID_KI, PID_KD);
     reset_emergency_stop();
+
+    display_data_t display_struct;
+    
+    i2c_init(i2c_default, 400 * 1000);
+    ssd1306_gpio_init(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN);
+
+    ssd1306_t disp;
+    disp.external_vcc=false;
+    ssd1306_init(&disp, 128, 64, true, 0x3C, i2c_default);
+    ssd1306_clear(&disp);
+
     absolute_time_t last_time = get_absolute_time();
     int wrum_time = last_time;
     while (true) {
@@ -96,6 +109,13 @@ int main() {
                 }
                 break;
         }
+
+        snprintf(display_struct.ip, DISP_BUF(IP_SCALE), "HoStNaMe!!");
+        snprintf(display_struct.msg, DISP_BUF(MSG_SCALE), get_emergency_stop() ? "ESTOP" : "     ");
+        snprintf(display_struct.stuff, DISP_BUF(STUFF_SCALE), "%.0f, %.0f", get_rpm(MOTOR_LEFT), get_rpm(MOTOR_RIGHT));
+        ssd1306_draw_struct(&disp, &display_struct);
+        ssd1306_show(&disp);
+
         sleep_ms(10); // loop delay for PID
     }
 #elif TEST_MODE > 0

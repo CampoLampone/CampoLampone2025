@@ -55,4 +55,4 @@ void substep_init_state(PIO pio, int sm, int pin_a, substep_state_t *state);
 void substep_update(substep_state_t *state);
 void substep_calibrate_phases(PIO pio, uint sm);
 void substep_set_calibration_data(substep_state_t *state, int step0, int step1, int step2);
-void encoder_init();
+void encoders_init();

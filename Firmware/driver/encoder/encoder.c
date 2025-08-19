@@ -296,7 +296,7 @@ void substep_set_calibration_data(substep_state_t *state, int step0, int step1, 
 }
 
 
-void encoder_init(){
+void encoders_init(){
 	pio_add_program(encoder_pio, &quadrature_encoder_substep_program);
     for (int encoder = 0; encoder < ENCODER_COUNT; encoder++){
     	substep_init_state(encoder_pio, GET_ENCODER_SM(encoder), GET_ENCODER_PIN(encoder), &encoders_states[encoder]);

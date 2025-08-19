@@ -12,6 +12,7 @@
 PID_t motors_pid[MOTOR_COUNT];
 volatile bool emergencyStopFlag = false;
 float stall_for_ms[MOTOR_COUNT] = {0};
+float measured_rpm[MOTOR_COUNT] = {0};
 
 float compute_encoder_rpm(uint8_t encoder, float delta_ms){
     substep_update(&encoders_states[encoder]);
@@ -27,15 +28,15 @@ int clamp_pid_to_pwm(int val) {
 }
 
 void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
-    float measured_rpm = compute_encoder_rpm(side, delta_ms);
-    motors_pid[side].measured_value = measured_rpm;
+    measured_rpm[side] = compute_encoder_rpm(side, delta_ms);
+    motors_pid[side].measured_value = measured_rpm[side];
     motors_pid[side].dt = delta_ms;
     motors_pid[side].setpoint = target_speed;
     pid_compute(&motors_pid[side]);
     motor_set_pwm(side, emergencyStopFlag ? 0 : clamp_pid_to_pwm(motors_pid[side].output));
-    printf("%f,%i,", measured_rpm, target_speed);
+    printf("%f,%i,", measured_rpm[side], target_speed);
     
-    if ((fabsf(measured_rpm) <= STALL_THRESHOLD) && (abs(target_speed) > 2*STALL_THRESHOLD))
+    if ((fabsf(measured_rpm[side]) <= STALL_THRESHOLD) && (abs(target_speed) > 2*STALL_THRESHOLD))
         stall_for_ms[side] += delta_ms;
     else stall_for_ms[side] = 0;
 
@@ -73,4 +74,12 @@ void speed_controller_init(float kp, float ki, float kd) {
 
 void reset_emergency_stop() {
     emergencyStopFlag = false;
+}
+
+float get_rpm(uint8_t side){
+    return measured_rpm[side];
+}
+
+bool get_emergency_stop(){
+    return emergencyStopFlag;
 }
