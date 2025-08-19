@@ -7,3 +7,4 @@
 #define SPI_CMD_COAST 0x30
 #define SPI_CMD_BRAKE 0x40
 #define SPI_CMD_REL_ESTOP 0x69
+#define SPI_CMD_SET_HOSTNAME 0x70

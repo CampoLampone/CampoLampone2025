@@ -8,7 +8,7 @@
 #define PIN_CS   17
 #define PIN_MOSI 16
 
-#define BUF_SIZE 8
+#define BUF_SIZE 16
 
 uint8_t buffer[BUF_SIZE];
 

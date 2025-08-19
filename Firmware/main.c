@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "pico/stdio_usb.h"
 #include <pico/time.h>
+#include <string.h>
 #include "hardware/i2c.h"
 #include "motor.h"
 #include "encoder.h"
@@ -27,6 +28,7 @@ int16_t speed_target[MOTOR_COUNT] = {0, 0};
 int8_t position_target[MOTOR_COUNT] = {0, 0};
 uint8_t current_cmd = COMMAND_COAST;
 substep_state_t encoders_states[ENCODER_COUNT];
+display_data_t display_struct;
 
 void spi_callback(uint8_t *data){
     switch (data[0]) {
@@ -58,6 +60,9 @@ void spi_callback(uint8_t *data){
             reset_emergency_stop();
             clear_pid_cache();
             break;
+        case SPI_CMD_SET_HOSTNAME:
+            strcpy(display_struct.ip, (char*)&data[1]);
+            break;
     }
 }
 
@@ -72,15 +77,12 @@ int main() {
     spi_init(spi_callback);
     speed_controller_init(PID_KP, PID_KI, PID_KD);
     reset_emergency_stop();
-
-    display_data_t display_struct;
-
     i2c_init(i2c_default, 400 * 1000);
     ssd1306_gpio_init(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN);
 
     ssd1306_t disp;
     disp.external_vcc=false;
-    
+
     // Check if the device is present
     int ret = i2c_read_timeout_us(i2c_default, 0x3C, NULL, 0, false, 10000);
 
@@ -119,9 +121,8 @@ int main() {
                 }
                 break;
         }
-        
+
         if (ret) {
-            snprintf(display_struct.ip, DISP_BUF(IP_SCALE), "HoStNaMe!!");
             snprintf(display_struct.msg, DISP_BUF(MSG_SCALE), get_emergency_stop() ? "ESTOP" : "     ");
             snprintf(display_struct.stuff, DISP_BUF(STUFF_SCALE), "%.0f, %.0f", get_rpm(MOTOR_LEFT), get_rpm(MOTOR_RIGHT));
             ssd1306_draw_struct(&disp, &display_struct);
