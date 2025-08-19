@@ -84,6 +84,8 @@ void do_tests(){
             absolute_time_t current_time = get_absolute_time();
             int64_t delta_us = absolute_time_diff_us(last_time, current_time);
             last_time = current_time;
+
+            compute_encoders_rpm(delta_us / 1000.0);
             control_speed(control, delta_us / 1000.0);
 
             snprintf(display_struct.ip, DISP_BUF(IP_SCALE), "HoStNaMe!!");

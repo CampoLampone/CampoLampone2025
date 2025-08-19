@@ -18,6 +18,7 @@
 #define STALL_THRESHOLD 1.0  // in RPM
 #define STALL_TIME_MS 1000    // Time in milliseconds
 
+void compute_encoders_rpm(float delta_ms);
 void speed_controller_init(float kp, float ki, float kd);
 void reset_emergency_stop();
 void clear_pid_cache();

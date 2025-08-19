@@ -14,10 +14,12 @@ volatile bool emergencyStopFlag = false;
 float stall_for_ms[MOTOR_COUNT] = {0};
 float measured_rpm[MOTOR_COUNT] = {0};
 
-float compute_encoder_rpm(uint8_t encoder, float delta_ms){
-    substep_update(&encoders_states[encoder]);
-    int measured_speed = encoders_states[encoder].speed;
-    return (float) measured_speed / SUBSTEPS_PER_PULSE / PULSES_PER_WHEEL_ROTATION * 60.0;
+void compute_encoders_rpm(float delta_ms){
+    for (int side = 0; side < ENCODER_COUNT; side++) {
+        substep_update(&encoders_states[side]);
+        int measured_speed = encoders_states[side].speed;
+        measured_rpm[side] = measured_speed / SUBSTEPS_PER_PULSE / PULSES_PER_WHEEL_ROTATION * 60.0;
+    }
 }
 
 int clamp_pid_to_pwm(int val) {
@@ -28,7 +30,6 @@ int clamp_pid_to_pwm(int val) {
 }
 
 void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
-    measured_rpm[side] = compute_encoder_rpm(side, delta_ms);
     motors_pid[side].measured_value = measured_rpm[side];
     motors_pid[side].dt = delta_ms;
     motors_pid[side].setpoint = target_speed;
