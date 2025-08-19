@@ -75,8 +75,17 @@ void do_tests(){
 
         ssd1306_t disp;
         disp.external_vcc=false;
-        ssd1306_init(&disp, 128, 64, true, 0x3C, i2c_default);
-        ssd1306_clear(&disp);
+        
+        // Check if the device is present
+        int ret = i2c_read_timeout_us(i2c_default, 0x3C, NULL, 0, false, 10000);
+
+        if (ret) {
+            printf("I2C device found at address 0x%02X\n", 0x3C);
+            ssd1306_init(&disp, 128, 64, true, 0x3C, i2c_default);
+            ssd1306_clear(&disp);
+        } else {
+            printf("No I2C device found at address 0x%02X. Is the display connected correctly?\n", 0x3C);
+        }
 
         absolute_time_t last_time = get_absolute_time();
         int wrum_time = last_time;
@@ -88,11 +97,13 @@ void do_tests(){
             compute_encoders_rpm(delta_us / 1000.0);
             control_speed(control, delta_us / 1000.0);
 
-            snprintf(display_struct.ip, DISP_BUF(IP_SCALE), "HoStNaMe!!");
-            snprintf(display_struct.msg, DISP_BUF(MSG_SCALE), get_emergency_stop() ? "ESTOP" : "     ");
-            snprintf(display_struct.stuff, DISP_BUF(STUFF_SCALE), "%.0f, %.0f", get_rpm(MOTOR_LEFT), get_rpm(MOTOR_RIGHT));
-            ssd1306_draw_struct(&disp, &display_struct);
-            ssd1306_show(&disp);
+            if (ret) {
+                snprintf(display_struct.ip, DISP_BUF(IP_SCALE), "HoStNaMe!!");
+                snprintf(display_struct.msg, DISP_BUF(MSG_SCALE), get_emergency_stop() ? "ESTOP" : "     ");
+                snprintf(display_struct.stuff, DISP_BUF(STUFF_SCALE), "%.0f, %.0f", get_rpm(MOTOR_LEFT), get_rpm(MOTOR_RIGHT));
+                ssd1306_draw_struct(&disp, &display_struct);
+                ssd1306_show(&disp);
+            }
 
             sleep_ms(10);
             if (current_time - wrum_time > 5e4) {
