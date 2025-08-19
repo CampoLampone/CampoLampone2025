@@ -33,12 +33,10 @@ void spi_callback(uint8_t *data){
         case SPI_CMD_SET_SPEED_BASE:
             current_cmd = COMMAND_SPEED;
             speed_target[0] = (data[1] << 8) | data[2];
-            clear_pid_cache();
             break;
         case SPI_CMD_SET_SPEED_BASE + SPI_CMD_NEXT_MOTOR:
             current_cmd = COMMAND_SPEED;
             speed_target[1] = (data[1] << 8) | data[2];
-            clear_pid_cache();
             break;
         case SPI_CMD_SET_POSITION_BASE:
             current_cmd = COMMAND_POSITION;
@@ -58,6 +56,7 @@ void spi_callback(uint8_t *data){
             break;
         case SPI_CMD_REL_ESTOP:
             reset_emergency_stop();
+            clear_pid_cache();
             break;
     }
 }
@@ -75,7 +74,7 @@ int main() {
     reset_emergency_stop();
 
     display_data_t display_struct;
-    
+
     i2c_init(i2c_default, 400 * 1000);
     ssd1306_gpio_init(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN);
 

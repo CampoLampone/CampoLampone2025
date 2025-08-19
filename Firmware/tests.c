@@ -93,6 +93,16 @@ void do_tests(){
             ssd1306_show(&disp);
 
             sleep_ms(10);
+            if (current_time - wrum_time > 5e4) {
+                wrum_time = current_time;
+                if (control[0] == 0) {
+                    control[0] = 60;
+                    control[1] = -60;
+                } else {
+                    control[0] = 50;
+                    control[1] = -50;
+                }
+            }
         }
     #else
         #error "End of tests"
