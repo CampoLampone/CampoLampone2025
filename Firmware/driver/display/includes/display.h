@@ -73,7 +73,7 @@ typedef struct {
 /**
 *	@brief stuff to display using
 */
-#define DISP_BUF(scale) 128/(scale*5)
+#define DISP_BUF(scale) 128/(scale*5)+1
 #define IP_SCALE 2
 #define MSG_SCALE 4
 #define STUFF_SCALE 2
