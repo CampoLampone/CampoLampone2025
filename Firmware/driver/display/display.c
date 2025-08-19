@@ -306,6 +306,7 @@ void ssd1306_show(ssd1306_t *p) {
 }
 
 void ssd1306_draw_struct(ssd1306_t *p, display_data_t *data) {
+    ssd1306_clear(p);
     ssd1306_draw_string(p, 5, 0, IP_SCALE, data->ip);
     ssd1306_draw_string(p, 6, 16, MSG_SCALE, data->msg);
     ssd1306_draw_string(p, 5, 48, STUFF_SCALE, data->stuff);
