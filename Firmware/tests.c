@@ -75,7 +75,7 @@ void do_tests(){
 
         ssd1306_t disp;
         disp.external_vcc=false;
-        
+
         // Check if the device is present
         int ret = i2c_read_timeout_us(i2c_default, 0x3C, NULL, 0, false, 10000);
 
@@ -106,14 +106,14 @@ void do_tests(){
             }
 
             sleep_ms(10);
-            if (current_time - wrum_time > 5e4) {
+            if (current_time - wrum_time > 5e6) {
                 wrum_time = current_time;
                 if (control[0] == 0) {
-                    control[0] = 60;
-                    control[1] = -60;
+                    control[0] = -60;
+                    control[1] = 60;
                 } else {
-                    control[0] = 50;
-                    control[1] = -50;
+                    control[0] = 0;
+                    control[1] = 0;
                 }
             }
         }
