@@ -14,6 +14,28 @@ volatile bool emergencyStopFlag = false;
 float stall_for_ms[MOTOR_COUNT] = {0};
 float measured_rpm[MOTOR_COUNT] = {0};
 
+
+typedef struct {
+    float alpha;
+    float y_prev;
+} LowPassFilter;
+
+void lpf_init(LowPassFilter *f, float cutoff_freq, float dt) {
+    float RC = 1.0f / (2.0f * 3.14159265f * cutoff_freq);
+    f->alpha = dt / (RC + dt);
+    f->y_prev = 0.0f;  // initial output
+}
+
+float lpf_apply(LowPassFilter *f, float x) {
+    float y = f->y_prev + f->alpha * (x - f->y_prev);
+    f->y_prev = y;
+    return y;
+}
+
+
+LowPassFilter lp_filter[MOTOR_COUNT];
+
+
 void compute_encoders_rpm(float delta_ms){
     for (int side = 0; side < ENCODER_COUNT; side++) {
         substep_update(&encoders_states[side]);
@@ -30,13 +52,13 @@ int clamp_pid_to_pwm(int val) {
 }
 
 void control_motor_speed(int16_t target_speed, uint8_t side, float delta_ms){
-    motors_pid[side].measured_value = measured_rpm[side];
+    motors_pid[side].measured_value = lpf_apply(&lp_filter[side], measured_rpm[side]);
     motors_pid[side].dt = delta_ms;
     motors_pid[side].setpoint = target_speed;
     pid_compute(&motors_pid[side]);
     motor_set_pwm(side, emergencyStopFlag ? 0 : clamp_pid_to_pwm(motors_pid[side].output));
     printf("%f,%i,", measured_rpm[side], target_speed);
-    
+
     if ((fabsf(measured_rpm[side]) <= STALL_THRESHOLD) && (abs(target_speed) > 2*STALL_THRESHOLD))
         stall_for_ms[side] += delta_ms;
     else stall_for_ms[side] = 0;
@@ -68,6 +90,7 @@ void speed_controller_init(float kp, float ki, float kd) {
         motors_pid[motor].kp = kp;
         motors_pid[motor].ki = ki;
         motors_pid[motor].kd = kd;
+        lpf_init(&lp_filter[motor], 2.0f, 0.01f);
         // motors_pid[motor].integral_max = PID_I_MAX;
         // motors_pid[motor].integral_min = -PID_I_MAX;
     }
